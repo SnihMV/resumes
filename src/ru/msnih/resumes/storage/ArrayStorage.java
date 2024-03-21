@@ -5,8 +5,9 @@ import ru.msnih.resumes.model.Resume;
 
 import java.util.Arrays;
 
-public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+public class ArrayStorage implements Storage {
+    private static final int STORAGE_LIMIT = 10000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size;
 
     public void clear() {
@@ -14,13 +15,13 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        if (size == storage.length) {
-            System.out.println("Can not be saved because of storage is full");
-            return;
-        }
-        if (getIndex(r.getUuid()) < 0) {
+        if (getIndex(r.getUuid()) >= 0) {
+            System.out.println("Resume " + r.getUuid() + " already exists");
+        } else if (size == storage.length) {
+            System.out.println("Storage is full");
+        } else {
             storage[size++] = r;
-        } else System.out.println("This resume already exists in the storage");
+        }
     }
 
     public void update(Resume r) {
@@ -31,11 +32,11 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return storage[i];
-            }
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
         }
+        System.out.println("There is no such a resume");
         return null;
     }
 
