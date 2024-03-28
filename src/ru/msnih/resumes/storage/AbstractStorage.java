@@ -2,24 +2,21 @@ package ru.msnih.resumes.storage;
 
 import ru.msnih.resumes.exception.AlreadyExistStorageException;
 import ru.msnih.resumes.exception.NotExistStorageException;
-import ru.msnih.resumes.exception.StorageException;
 import ru.msnih.resumes.model.Resume;
 
-import java.util.Arrays;
+public abstract class AbstractStorage<K> implements Storage {
 
-public abstract class AbstractStorage implements Storage {
+    protected abstract Resume doGet(K searchKey);
 
-    protected abstract Resume doGet(Object searchKey);
+    protected abstract void doSave(Resume resume, K searchKey);
 
-    protected abstract void doSave(Resume resume, Object searchKey);
+    protected abstract void doUpdate(Resume resume, K searchKey);
 
-    protected abstract void doUpdate(Resume resume, Object searchKey);
+    protected abstract void doDelete(K searchKey);
 
-    protected abstract void doDelete(Object searchKey);
+    protected abstract K getSearchKey(String uuid);
 
-    protected abstract Object getSearchKey(String uuid);
-
-    protected abstract boolean isExist(Object searchKey);
+    protected abstract boolean isExist(K searchKey);
 
     public Resume get(String uuid) {
         return doGet(getExistedKey(uuid));
@@ -37,15 +34,15 @@ public abstract class AbstractStorage implements Storage {
         doDelete(getExistedKey(uuid));
     }
 
-    private Object getExistedKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private K getExistedKey(String uuid) {
+        K searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
             throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
-    private Object getNotExistedKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private K getNotExistedKey(String uuid) {
+        K searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new AlreadyExistStorageException(uuid);
         }

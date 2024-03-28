@@ -1,13 +1,11 @@
 package ru.msnih.resumes.storage;
 
-import ru.msnih.resumes.exception.AlreadyExistStorageException;
-import ru.msnih.resumes.exception.NotExistStorageException;
 import ru.msnih.resumes.exception.StorageException;
 import ru.msnih.resumes.model.Resume;
 
 import java.util.Arrays;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
@@ -21,27 +19,27 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return storage[(Integer) searchKey];
+    protected Resume doGet(Integer index) {
+        return storage[index];
     }
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Integer index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Cannot save resume due to storage is full", resume.getUuid());
         }
-        insertElement(resume, (Integer) searchKey);
+        insertElement(resume, index);
         size++;
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
-        storage[(Integer) searchKey] = resume;
+    protected void doUpdate(Resume resume, Integer index) {
+        storage[index] = resume;
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        fillDeletedElement((Integer) searchKey);
+    protected void doDelete(Integer index) {
+        fillDeletedElement(index);
         size--;
     }
 
@@ -55,8 +53,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (int) searchKey >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     public Resume[] getAll() {

@@ -3,32 +3,31 @@ package ru.msnih.resumes.storage;
 import ru.msnih.resumes.model.Resume;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
 
     private final Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        return map.get((String) searchKey);
+    protected Resume doGet(String searchKey) {
+        return map.get(searchKey);
     }
 
     @Override
-    protected void doSave(Resume resume, Object searchKey) {
-        map.put((String) searchKey, resume);
+    protected void doSave(Resume resume, String searchKey) {
+        map.put(searchKey, resume);
     }
 
     @Override
-    protected void doUpdate(Resume resume, Object searchKey) {
+    protected void doUpdate(Resume resume, String searchKey) {
         doSave(resume, searchKey);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        map.remove((String) searchKey);
+    protected void doDelete(String searchKey) {
+        map.remove(searchKey);
     }
 
     @Override
@@ -37,8 +36,8 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return map.containsKey((String) searchKey);
+    protected boolean isExist(String searchKey) {
+        return map.containsKey(searchKey);
     }
 
     @Override
