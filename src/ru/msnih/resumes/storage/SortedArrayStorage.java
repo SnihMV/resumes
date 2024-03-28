@@ -3,6 +3,7 @@ package ru.msnih.resumes.storage;
 import ru.msnih.resumes.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 

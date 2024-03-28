@@ -1,15 +1,12 @@
 package ru.msnih.resumes.storage;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.msnih.resumes.exception.AlreadyExistStorageException;
-import ru.msnih.resumes.exception.NotExistStorageException;
 import ru.msnih.resumes.exception.StorageException;
 import ru.msnih.resumes.model.Resume;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class AbstractArrayStorageTest extends StorageTest {
+public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
