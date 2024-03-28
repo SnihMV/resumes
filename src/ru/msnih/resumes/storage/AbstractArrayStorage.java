@@ -6,6 +6,7 @@ import ru.msnih.resumes.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
+
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size;
@@ -55,10 +56,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     @Override
     protected boolean isExist(Integer index) {
         return index >= 0;
-    }
-
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
     }
 
 }

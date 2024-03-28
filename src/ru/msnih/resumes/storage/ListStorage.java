@@ -3,6 +3,7 @@ package ru.msnih.resumes.storage;
 import ru.msnih.resumes.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage<Integer> {
@@ -50,8 +51,10 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public Resume[] getAll() {
-        return list.toArray(new Resume[size()]);
+    public List<Resume> getAllSorted() {
+        ArrayList<Resume> copy = new ArrayList<>(list);
+        Collections.sort(copy);
+        return copy;
     }
 
     @Override

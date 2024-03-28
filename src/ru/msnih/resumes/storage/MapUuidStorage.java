@@ -2,9 +2,7 @@ package ru.msnih.resumes.storage;
 
 import ru.msnih.resumes.model.Resume;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapUuidStorage extends AbstractStorage<String> {
 
@@ -46,10 +44,10 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    public Resume[] getAll() {
-        Resume[] all = map.values().toArray(new Resume[size()]);
-        Arrays.sort(all, null);
-        return all;
+    public List<Resume> getAllSorted() {
+        ArrayList<Resume> resumes = new ArrayList<>(map.values());
+        Collections.sort(resumes);
+        return resumes;
     }
 
     @Override

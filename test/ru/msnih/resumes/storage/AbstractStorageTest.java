@@ -6,6 +6,9 @@ import ru.msnih.resumes.exception.AlreadyExistStorageException;
 import ru.msnih.resumes.exception.NotExistStorageException;
 import ru.msnih.resumes.model.Resume;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractStorageTest {
@@ -86,9 +89,8 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    void getAll() {
-        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3, RESUME_4}, storage.getAll());
-        assertSize(4);
+    void getAllSorted() {
+        assertIterableEquals(Arrays.asList(RESUME_1,RESUME_2,RESUME_3,RESUME_4), storage.getAllSorted());
     }
 
     protected void assertSize(int i) {
