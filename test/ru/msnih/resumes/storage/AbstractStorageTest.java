@@ -7,7 +7,6 @@ import ru.msnih.resumes.exception.NotExistStorageException;
 import ru.msnih.resumes.model.Resume;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
