@@ -1,45 +1,64 @@
 package ru.msnih.resumes.model;
 
+import java.util.Comparator;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume> {
 
-    // Unique identifier
-    private final String uuid;
+    private static final Comparator<Resume> RESUME_COMPARATOR;
+    private static final Comparator<String> NULL_SAFE_STRING_COMPARATOR;
 
-    public Resume() {
-        this(UUID.randomUUID().toString());
+    private final String uuid;
+    private String fullName;
+
+    static {
+        NULL_SAFE_STRING_COMPARATOR = Comparator.nullsLast(String::compareToIgnoreCase);
+        RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName, NULL_SAFE_STRING_COMPARATOR)
+                .thenComparing(Resume::getUuid, NULL_SAFE_STRING_COMPARATOR);
     }
 
-    public Resume(String uuid) {
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
+    }
+
+    public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "Resume id cannot be null");
         this.uuid = uuid;
+        setFullName(fullName);
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Resume that = (Resume) obj;
-        return uuid.equals(that.uuid);
+    public String getFullName() {
+        return fullName;
     }
 
-    @Override
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume that = (Resume) o;
+        return Objects.equals(uuid, that.uuid);
+    }
+
     public int hashCode() {
         return uuid.hashCode();
     }
 
     @Override
     public String toString() {
-        return uuid;
+        return "UUID: \"" + uuid + "\" Name: \"" + fullName + "\"";
     }
 
     @Override
     public int compareTo(Resume that) {
-        return uuid.compareTo(that.uuid);
+        return RESUME_COMPARATOR.compare(this, that);
     }
 }

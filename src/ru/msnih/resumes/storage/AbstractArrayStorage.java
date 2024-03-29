@@ -4,11 +4,13 @@ import ru.msnih.resumes.exception.StorageException;
 import ru.msnih.resumes.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
+
     protected int size;
 
     @Override
@@ -45,6 +47,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
+    protected boolean isExist(Integer index) {
+        return index >= 0;
+    }
+
+    @Override
     public int size() {
         return size;
     }
@@ -54,8 +61,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected boolean isExist(Integer index) {
-        return index >= 0;
+    public List<Resume> getAllSorted() {
+        Resume[] copied = Arrays.copyOf(storage,size);
+        Arrays.sort(copied);
+        return Arrays.asList(copied);
     }
 
 }

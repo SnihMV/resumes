@@ -1,18 +1,17 @@
 package ru.msnih.resumes.storage;
 
 import ru.msnih.resumes.model.Resume;
-import static java.util.Arrays.copyOf;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
 
+    private final Comparator<Resume> uuidComparator = Comparator.comparing(Resume::getUuid);
 
     @Override
     protected Integer getSearchKey(String uuid) {
-        return Arrays.binarySearch(storage, 0, size, new Resume(uuid));
+        return Arrays.binarySearch(storage, 0, size, new Resume(uuid,"dummy"), uuidComparator);
     }
 
     @Override
@@ -27,8 +26,4 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         System.arraycopy(storage, index + 1, storage, index, size - index + 1);
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        return Arrays.asList(copyOf(storage,size));
-    }
 }

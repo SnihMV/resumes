@@ -18,6 +18,7 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
+    private static final String DUMMY = "dummy";
 
     public static final Resume RESUME_1;
     public static final Resume RESUME_2;
@@ -25,10 +26,10 @@ public abstract class AbstractStorageTest {
     public static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume(UUID_1);
-        RESUME_2 = new Resume(UUID_2);
-        RESUME_3 = new Resume(UUID_3);
-        RESUME_4 = new Resume(UUID_4);
+        RESUME_1 = new Resume(UUID_1, "Name1");
+        RESUME_2 = new Resume(UUID_2, "Name4");
+        RESUME_3 = new Resume(UUID_3, null);
+        RESUME_4 = new Resume(UUID_4, "Name3");
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -46,24 +47,24 @@ public abstract class AbstractStorageTest {
 
     @Test
     void get() {
-        assertEquals(new Resume(UUID_1), storage.get(UUID_1));
-        assertNotEquals(new Resume(UUID_2), storage.get(UUID_1));
+        assertEquals(new Resume(UUID_1,DUMMY), storage.get(UUID_1));
+        assertNotEquals(new Resume(UUID_2, DUMMY), storage.get(UUID_1));
         assertThrows(NotExistStorageException.class, () -> storage.get("uuid5"));
         assertSize(4);
     }
 
     @Test
     void save() {
-        assertDoesNotThrow(() -> storage.save(new Resume("uuid5")));
+        assertDoesNotThrow(() -> storage.save(new Resume("Mike")));
         assertSize(5);
-        assertThrows(AlreadyExistStorageException.class, () -> storage.save(new Resume("uuid1")));
+        assertThrows(AlreadyExistStorageException.class, () -> storage.save(new Resume(UUID_3, DUMMY)));
         assertSize(5);
     }
 
     @Test
     void update() {
         Resume resume = storage.get("uuid2");
-        storage.update(new Resume("uuid2"));
+        storage.update(new Resume(UUID_2,DUMMY));
         assertNotSame(resume, storage.get("uuid2"));
         assertSize(4);
     }
@@ -89,7 +90,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     void getAllSorted() {
-        assertIterableEquals(Arrays.asList(RESUME_1,RESUME_2,RESUME_3,RESUME_4), storage.getAllSorted());
+        assertIterableEquals(Arrays.asList(RESUME_1,RESUME_4,RESUME_2,RESUME_3), storage.getAllSorted());
     }
 
     protected void assertSize(int i) {
