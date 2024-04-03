@@ -4,7 +4,13 @@ import ru.msnih.resumes.exception.AlreadyExistStorageException;
 import ru.msnih.resumes.exception.NotExistStorageException;
 import ru.msnih.resumes.model.Resume;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+
 public abstract class AbstractStorage<K> implements Storage {
+
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     protected abstract Resume doGet(K searchKey);
 
@@ -18,7 +24,10 @@ public abstract class AbstractStorage<K> implements Storage {
 
     protected abstract boolean isExist(K searchKey);
 
+    protected abstract List<Resume> getCopyAll();
+
     public Resume get(String uuid) {
+        LOG.severe("Get "+uuid);
         return doGet(getExistedKey(uuid));
     }
 
@@ -33,7 +42,6 @@ public abstract class AbstractStorage<K> implements Storage {
     public void delete(String uuid) {
         doDelete(getExistedKey(uuid));
     }
-
     private K getExistedKey(String uuid) {
         K searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
@@ -41,12 +49,20 @@ public abstract class AbstractStorage<K> implements Storage {
         }
         return searchKey;
     }
+
     private K getNotExistedKey(String uuid) {
         K searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
             throw new AlreadyExistStorageException(uuid);
         }
         return searchKey;
+    }
+
+    @Override
+    public List<Resume> getAllSorted(){
+        List<Resume> list = getCopyAll();
+        Collections.sort(list);
+        return list;
     }
 
 }

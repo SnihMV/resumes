@@ -46,6 +46,11 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
+    protected List<Resume> getCopyAll() {
+        return list;
+    }
+
+    @Override
     public void clear() {
         list.clear();
     }

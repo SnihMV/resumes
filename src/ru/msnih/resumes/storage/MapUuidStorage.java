@@ -9,23 +9,23 @@ public class MapUuidStorage extends AbstractStorage<String> {
     private final Map<String, Resume> map = new HashMap<>();
 
     @Override
-    protected Resume doGet(String searchKey) {
-        return map.get(searchKey);
+    protected Resume doGet(String uuid) {
+        return map.get(uuid);
     }
 
     @Override
-    protected void doSave(Resume resume, String searchKey) {
-        map.put(searchKey, resume);
+    protected void doSave(Resume resume, String uuid) {
+        map.put(uuid, resume);
     }
 
     @Override
-    protected void doUpdate(Resume resume, String searchKey) {
-        doSave(resume, searchKey);
+    protected void doUpdate(Resume resume, String uuid) {
+        doSave(resume, uuid);
     }
 
     @Override
-    protected void doDelete(String searchKey) {
-        map.remove(searchKey);
+    protected void doDelete(String uuid) {
+        map.remove(uuid);
     }
 
     @Override
@@ -34,8 +34,13 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected boolean isExist(String searchKey) {
-        return map.containsKey(searchKey);
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
+    }
+
+    @Override
+    protected List<Resume> getCopyAll() {
+        return new ArrayList<>(map.values());
     }
 
     @Override

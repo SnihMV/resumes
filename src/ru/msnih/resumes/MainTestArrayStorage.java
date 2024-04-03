@@ -2,9 +2,14 @@ package ru.msnih.resumes;
 
 
 import ru.msnih.resumes.exception.StorageException;
-import ru.msnih.resumes.model.Resume;
+import ru.msnih.resumes.model.*;
 import ru.msnih.resumes.storage.ArrayStorage;
 import ru.msnih.resumes.storage.Storage;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new ArrayStorage();
@@ -36,6 +41,30 @@ public class MainTestArrayStorage {
         printAll();
 
         System.out.println("Size: " + ARRAY_STORAGE.size());
+
+
+        Resume R1 = new Resume("Mike Snih");
+        R1.addContact(ContactType.PHONE, "89219894856");
+        R1.addContact(ContactType.EMAIL, "SnihMV@gmail.com");
+        R1.addContact(ContactType.HOMEPAGE, "www.sneech.com");
+        R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective section R1"));
+        R1.addSection(SectionType.PERSONAL, new TextSection("Personal section R1"));
+        R1.addSection(SectionType.ACHIEVEMENT, new ListSection());
+        R1.addSection(SectionType.QUALIFICATION, new ListSection("Java", "SQL", "Spring"));
+        R1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
+                new Organization("Kremlin", "www.kremlin.ru",
+                        new Organization.Position("President", null, 2024, Month.MARCH),
+                        new Organization.Position("President", null, 2024, Month.MARCH, 2032, Month.APRIL)),
+                new Organization("Waverma", null,
+                        new Organization.Position("Waiter", null, 1998, Month.DECEMBER),
+                        new Organization.Position("Waiter", null, 1999, Month.JANUARY),
+                        new Organization.Position("Waiter", null, 1999, Month.JANUARY, 2032, Month.APRIL))));
+        R1.addSection(SectionType.EDUCATION, new OrganizationSection(
+                new Organization("BGTU", null,
+                        new Organization.Position("student", "learning", 2004, Month.SEPTEMBER, 2009, Month.JULY),
+                        new Organization.Position("aspirant", null, 2009, Month.AUGUST, 2012, Month.JUNE))));
+        System.out.println(R1);
+
     }
 
     static void printAll() {
