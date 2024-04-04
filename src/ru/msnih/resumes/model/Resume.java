@@ -1,8 +1,9 @@
 package ru.msnih.resumes.model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Resume implements Comparable<Resume> {
+public class Resume implements Comparable<Resume>, Serializable {
 
     private static final Comparator<String> NULL_SAFE_STRING_COMPARATOR;
     private static final Comparator<Resume> RESUME_COMPARATOR;

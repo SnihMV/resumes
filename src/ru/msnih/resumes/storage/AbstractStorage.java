@@ -6,11 +6,8 @@ import ru.msnih.resumes.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 
 public abstract class AbstractStorage<K> implements Storage {
-
-    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     protected abstract Resume doGet(K searchKey);
 
@@ -27,7 +24,6 @@ public abstract class AbstractStorage<K> implements Storage {
     protected abstract List<Resume> getCopyAll();
 
     public Resume get(String uuid) {
-        LOG.severe("Get "+uuid);
         return doGet(getExistedKey(uuid));
     }
 

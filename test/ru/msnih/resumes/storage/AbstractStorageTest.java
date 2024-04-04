@@ -15,6 +15,8 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
+    protected static final String STORAGE_DIR = "C:\\workspace\\resumes\\Resumes\\storage";
+
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -87,14 +89,15 @@ public abstract class AbstractStorageTest {
         Resume resume = storage.get("uuid2");
         storage.update(new Resume(UUID_2, DUMMY));
         assertNotSame(resume, storage.get("uuid2"));
+        assertEquals(resume, storage.get("uuid2"));
         assertSize(4);
     }
 
     @Test
     void delete() {
-        assertDoesNotThrow(() -> storage.delete(UUID_1));
+        assertDoesNotThrow(() -> storage.delete(UUID_2));
         assertSize(3);
-        assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_1));
+        assertThrows(NotExistStorageException.class, () -> storage.delete(UUID_2));
         assertSize(3);
     }
 

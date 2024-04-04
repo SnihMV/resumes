@@ -1,22 +1,17 @@
 package ru.msnih.resumes.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
 import static ru.msnih.resumes.util.DateUtil.of;
 
-public class Organization {
+public class Organization implements Serializable {
 
-    private static final Comparator<Position> POSITION_COMPARATOR;
+    private static final Position.SerComparator POSITION_COMPARATOR = new Position.SerComparator();
     private final Link link;
     private final Collection<Position> positions = new TreeSet<>(POSITION_COMPARATOR);
-
-    static {
-        POSITION_COMPARATOR = Comparator.comparing(Position::getStartDate)
-                .thenComparing(Position::getEndDate, Comparator.nullsLast(LocalDate::compareTo))
-                .thenComparing(Position::getTitle, String::compareToIgnoreCase);
-    }
 
     public Organization(String name, String url) {
         this(name, url, Collections.emptySet());
@@ -61,7 +56,7 @@ public class Organization {
         return sb.toString();
     }
 
-    public static class Position {
+    public static class Position implements Serializable {
 
         private String title;
         private String description;
@@ -69,7 +64,7 @@ public class Organization {
         private LocalDate endDate;
 
         public Position(String title, String description, int startYear, Month startMonth) {
-            this(title, description, of(startYear,startMonth), null);
+            this(title, description, of(startYear, startMonth), null);
         }
 
         public Position(String name, String description, int startYear, Month startMonth, int endYear, Month endMonth) {
@@ -122,5 +117,16 @@ public class Organization {
         public void setEndDate(LocalDate endDate) {
             this.endDate = endDate;
         }
+
+        private static class SerComparator implements Comparator<Position>, Serializable {
+
+            @Override
+            public int compare(Position o1, Position o2) {
+                return Comparator.comparing(Position::getStartDate)
+                        .thenComparing(Position::getEndDate, Comparator.nullsLast(LocalDate::compareTo))
+                        .thenComparing(Position::getTitle, String::compareToIgnoreCase).compare(o1, o2);
+            }
+        }
     }
+
 }
