@@ -6,15 +6,17 @@ import ru.msnih.resumes.model.*;
 import ru.msnih.resumes.storage.ArrayStorage;
 import ru.msnih.resumes.storage.Storage;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new ArrayStorage();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchFieldException {
         Resume r1 = new Resume("uuid1", "name1");
         Resume r2 = new Resume("uuid2", "name2");
         Resume r3 = new Resume("uuid3", "name3");
@@ -63,7 +65,7 @@ public class MainTestArrayStorage {
                 new Organization("BGTU", null,
                         new Organization.Position("student", "learning", 2004, Month.SEPTEMBER, 2009, Month.JULY),
                         new Organization.Position("aspirant", null, 2009, Month.AUGUST, 2012, Month.JUNE))));
-        System.out.println(R1);
+//        System.out.println(R1);
 
     }
 
@@ -73,4 +75,7 @@ public class MainTestArrayStorage {
             System.out.println(r);
         }
     }
+
 }
+
+

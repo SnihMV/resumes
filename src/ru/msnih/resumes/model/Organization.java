@@ -1,5 +1,10 @@
 package ru.msnih.resumes.model;
 
+import ru.msnih.resumes.util.XmlLocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -7,11 +12,14 @@ import java.util.*;
 
 import static ru.msnih.resumes.util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
 
-    private static final Position.SerComparator POSITION_COMPARATOR = new Position.SerComparator();
-    private final Link link;
-    private final Collection<Position> positions = new TreeSet<>(POSITION_COMPARATOR);
+    private Link link;
+    private final Set<Position> positions = new TreeSet<>();
+
+    public Organization() {
+    }
 
     public Organization(String name, String url) {
         this(name, url, Collections.emptySet());
@@ -39,11 +47,17 @@ public class Organization implements Serializable {
         this.positions.addAll(positions);
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Organization that = (Organization) o;
-        return link.getName().equals(that.link.getName());
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Organization that = (Organization) object;
+        return Objects.equals(link, that.link) && Objects.equals(positions, that.positions);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(link, positions);
     }
 
     @Override
@@ -56,12 +70,18 @@ public class Organization implements Serializable {
         return sb.toString();
     }
 
-    public static class Position implements Serializable {
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class Position implements Comparable<Position>, Serializable {
 
         private String title;
         private String description;
+        @XmlJavaTypeAdapter(XmlLocalDateAdapter.class)
         private LocalDate startDate;
+        @XmlJavaTypeAdapter(XmlLocalDateAdapter.class)
         private LocalDate endDate;
+
+        public Position() {
+        }
 
         public Position(String title, String description, int startYear, Month startMonth) {
             this(title, description, of(startYear, startMonth), null);
@@ -76,6 +96,22 @@ public class Organization implements Serializable {
             setDescription(description);
             setStartDate(startDate);
             setEndDate(endDate);
+        }
+
+        @Override
+        public boolean equals(Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
+            Position position = (Position) object;
+            return Objects.equals(title, position.title) &&
+                    Objects.equals(description, position.description) &&
+                    Objects.equals(startDate, position.startDate) &&
+                    Objects.equals(endDate, position.endDate);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(title, description, startDate, endDate);
         }
 
         @Override
@@ -118,15 +154,12 @@ public class Organization implements Serializable {
             this.endDate = endDate;
         }
 
-        private static class SerComparator implements Comparator<Position>, Serializable {
-
-            @Override
-            public int compare(Position o1, Position o2) {
-                return Comparator.comparing(Position::getStartDate)
-                        .thenComparing(Position::getEndDate, Comparator.nullsLast(LocalDate::compareTo))
-                        .thenComparing(Position::getTitle, String::compareToIgnoreCase).compare(o1, o2);
-            }
+        @Override
+        public int compareTo(Position that) {
+            return Comparator.comparing(Position::getStartDate)
+                    .thenComparing(Position::getEndDate, Comparator.nullsLast(LocalDate::compareTo))
+                    .thenComparing(Position::getTitle, String::compareToIgnoreCase).compare(this, that);
         }
-    }
 
+    }
 }

@@ -70,8 +70,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     void get() {
-        assertEquals(new Resume(UUID_1, DUMMY), storage.get(UUID_1));
-        assertNotEquals(new Resume(UUID_2, DUMMY), storage.get(UUID_1));
+        assertGet(R1);
+        assertGet(R2);
+        assertGet(R3);
+        assertGet(R4);
+        assertNotEquals(R2, storage.get(UUID_1));
         assertThrows(NotExistStorageException.class, () -> storage.get("uuid5"));
         assertSize(4);
     }
@@ -89,7 +92,6 @@ public abstract class AbstractStorageTest {
         Resume resume = storage.get("uuid2");
         storage.update(new Resume(UUID_2, DUMMY));
         assertNotSame(resume, storage.get("uuid2"));
-        assertEquals(resume, storage.get("uuid2"));
         assertSize(4);
     }
 
@@ -117,6 +119,9 @@ public abstract class AbstractStorageTest {
         assertIterableEquals(Arrays.asList(R1, R3, R4, R2), storage.getAllSorted());
     }
 
+    protected void assertGet(Resume resume){
+        assertEquals(resume, storage.get(resume.getUuid()));
+    }
     protected void assertSize(int i) {
         assertEquals(i, storage.size());
     }

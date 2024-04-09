@@ -1,8 +1,13 @@
 package ru.msnih.resumes.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
 
     private static final Comparator<String> NULL_SAFE_STRING_COMPARATOR;
@@ -17,6 +22,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         NULL_SAFE_STRING_COMPARATOR = Comparator.nullsLast(String::compareToIgnoreCase);
         RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName, NULL_SAFE_STRING_COMPARATOR)
                 .thenComparing(Resume::getUuid, NULL_SAFE_STRING_COMPARATOR);
+    }
+
+    public Resume() {
+        this(null);
     }
 
     public Resume(String uuid, String fullName) {
@@ -54,20 +63,25 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
     public void setFullName(String fullName) {
-        Objects.requireNonNull(fullName, "FullName cannot be null");
         this.fullName = fullName;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Resume that = (Resume) o;
-        return Objects.equals(uuid, that.uuid);
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Resume resume = (Resume) object;
+        return Objects.equals(uuid, resume.uuid)
+                && Objects.equals(fullName, resume.fullName)
+                && Objects.equals(contacts, resume.contacts)
+                && Objects.equals(sections, resume.sections);
     }
 
+    @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return Objects.hash(uuid, fullName, contacts, sections);
     }
+
 
     @Override
     public String toString() {

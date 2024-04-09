@@ -12,12 +12,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class PathStorage extends AbstractStorage<Path> {
+public class PathStorageStrategy extends AbstractStorage<Path> {
 
     private final Path directory;
     private final StreamSerializer streamSerializer;
 
-    public PathStorage(Path directory, StreamSerializer streamSerializer) {
+    public PathStorageStrategy(Path directory, StreamSerializer streamSerializer) {
         Objects.requireNonNull(directory, "Storage directory cannot be null");
         if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException("Input storage " + directory + " is not directory");
