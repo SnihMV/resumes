@@ -46,6 +46,14 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+    public Map<SectionType, Section> getSections() {
+        return sections;
+    }
+
     public void addContact(ContactType type, String contact) {
         contacts.put(type, contact);
     }
@@ -89,7 +97,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (!contacts.isEmpty()) {
             sb.append("Contacts:\n");
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                sb.append(entry.getKey().getTitle() + ":" + entry.getValue()+"\n");
+                sb.append(entry.getKey().getTitle() + ":" + entry.getValue() + "\n");
             }
         }
         if (!sections.isEmpty()) {

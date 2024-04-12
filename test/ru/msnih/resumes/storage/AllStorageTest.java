@@ -12,6 +12,7 @@ import org.junit.platform.suite.api.Suite;
         MapResumeStorageTest.class,
         ObjectFileStorageTest.class,
         ObjectPathStorageTest.class,
+        DataPathStorageTest.class,
         XmlPathStorageTest.class,
         JsonPathStorageTest.class
 })

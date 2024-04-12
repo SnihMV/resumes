@@ -2,7 +2,6 @@ package ru.msnih.resumes.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import ru.msnih.resumes.model.Resume;
 import ru.msnih.resumes.model.Section;
 
 import java.io.Reader;

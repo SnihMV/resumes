@@ -22,6 +22,10 @@ public class ListSection extends Section {
         this.list = list;
     }
 
+    public void addItem(String item) {
+        list.add(item);
+    }
+
     public List<String> getList() {
         return list;
     }

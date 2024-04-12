@@ -34,12 +34,15 @@ public class Organization implements Serializable {
         this.positions.addAll(positions);
     }
 
+    public Link getLink() {
+        return link;
+    }
 
     public void addPosition(Position position) {
         positions.add(position);
     }
 
-    public Collection<Position> getPositions() {
+    public Set<Position> getPositions() {
         return positions;
     }
 
