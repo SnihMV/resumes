@@ -163,6 +163,5 @@ public class Organization implements Serializable {
                     .thenComparing(Position::getEndDate, Comparator.nullsLast(LocalDate::compareTo))
                     .thenComparing(Position::getTitle, String::compareToIgnoreCase).compare(this, that);
         }
-
     }
 }

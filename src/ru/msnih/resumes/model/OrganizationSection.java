@@ -1,24 +1,21 @@
 package ru.msnih.resumes.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class OrganizationSection extends Section {
-    private final List<Organization> organizations;
+    private final List<Organization> organizations = new ArrayList<>();
 
     public OrganizationSection() {
-        this.organizations = new ArrayList<>();
+        this(Collections.emptyList());
     }
 
     public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
     }
 
-    public OrganizationSection(List<Organization> organizations) {
+    public OrganizationSection(Collection<Organization> organizations) {
         Objects.requireNonNull(organizations, "Organization list cannot be null");
-        this.organizations = organizations;
+        this.organizations.addAll(organizations);
     }
 
     public List<Organization> getOrganizations(){

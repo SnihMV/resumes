@@ -1,72 +1,42 @@
 package ru.msnih.resumes.storage.serialization;
 
+import ru.msnih.resumes.exception.StorageException;
 import ru.msnih.resumes.model.*;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Function;
 
 public class DataStreamSerializer implements StreamSerializer {
     @Override
     public void doWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (DataOutputStream dos = new DataOutputStream(outputStream)) {
             dos.writeUTF(resume.getUuid());
-            boolean hasFullName = resume.getFullName() != null;
-            dos.writeBoolean(hasFullName);
-            if (hasFullName)
-                dos.writeUTF(resume.getFullName());
-            Map<ContactType, String> contacts = resume.getContacts();
-            dos.writeInt(contacts.size());
-            for (Map.Entry<ContactType, String> contact : contacts.entrySet()) {
+            writeNullable(resume.getFullName(), String::toString, dos);
+            writeCollection(dos, resume.getContacts().entrySet(), contact -> {
                 dos.writeUTF(contact.getKey().name());
                 dos.writeUTF(contact.getValue());
-            }
-            Map<SectionType, Section> sections = resume.getSections();
-            dos.writeInt(sections.size());
-            for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                dos.writeUTF(entry.getKey().name());
-                switch (entry.getKey()) {
-                    case PERSONAL, OBJECTIVE -> dos.writeUTF(entry.getValue().toString());
-                    case ACHIEVEMENT, QUALIFICATION -> {
-                        List<String> list = ((ListSection) entry.getValue()).getList();
-                        dos.writeInt(list.size());
-                        for (String item : list) {
-                            dos.writeUTF(item);
-                        }
-                    }
-                    case EDUCATION, EXPERIENCE -> {
-                        List<Organization> organizations = ((OrganizationSection) entry.getValue()).getOrganizations();
-                        dos.writeInt(organizations.size());
-                        for (Organization org : organizations) {
-                            dos.writeUTF(org.getLink().getName());
-                            String url = org.getLink().getUrl();
-                            dos.writeBoolean(url != null);
-                            if (url != null) {
-                                dos.writeUTF(url);
-                            }
-                            Set<Organization.Position> positions = org.getPositions();
-                            dos.writeInt(positions.size());
-                            for (Organization.Position position : positions) {
-                                dos.writeUTF(position.getTitle());
-                                String description = position.getDescription();
-                                dos.writeBoolean(description != null);
-                                if (description != null) {
-                                    dos.writeUTF(description);
-                                }
-                                dos.writeUTF(position.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                                LocalDate endDate = position.getEndDate();
-                                dos.writeBoolean(endDate != null);
-                                if (endDate != null) {
-                                    dos.writeUTF(endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                                }
-                            }
-                        }
-                    }
+            });
+            writeCollection(dos, resume.getSections().entrySet(), section -> {
+                dos.writeUTF(section.getKey().name());
+                switch (section.getKey()) {
+                    case PERSONAL, OBJECTIVE -> dos.writeUTF(((TextSection) section.getValue()).getContent());
+                    case ACHIEVEMENT, QUALIFICATION ->
+                            writeCollection(dos, ((ListSection) section.getValue()).getList(), dos::writeUTF);
+                    case EDUCATION, EXPERIENCE ->
+                            writeCollection(dos, ((OrganizationSection) section.getValue()).getOrganizations(), organization -> {
+                                dos.writeUTF(organization.getLink().getName());
+                                writeNullable(organization.getLink().getUrl(), String::toString, dos);
+                                writeCollection(dos, organization.getPositions(), position -> {
+                                    dos.writeUTF(position.getTitle());
+                                    writeNullable(position.getDescription(), String::toString, dos);
+                                    dos.writeUTF(position.getStartDate().toString());
+                                    writeNullable(position.getEndDate(), LocalDate::toString, dos);
+                                });
+                            });
                 }
-            }
+            });
         }
     }
 
@@ -74,60 +44,83 @@ public class DataStreamSerializer implements StreamSerializer {
     public Resume doRead(InputStream inputStream) throws IOException {
         try (DataInputStream dis = new DataInputStream(inputStream)) {
             String uuid = dis.readUTF();
-            String fullName = dis.readBoolean() ? dis.readUTF() : null;
+            String fullName = readNullable(dis, String::toString);
             Resume resume = new Resume(uuid, fullName);
-            int contactsCount = dis.readInt();
-            for (int i = 0; i < contactsCount; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
-            int sectionsCount = dis.readInt();
-            for (int i = 0; i < sectionsCount; i++) {
-                String type = dis.readUTF();
-                Section section = null;
-                switch (type) {
-                    case "PERSONAL", "OBJECTIVE" -> {
-                        section = new TextSection(dis.readUTF());
-                    }
-                    case "ACHIEVEMENT", "QUALIFICATION" -> {
-                        ListSection listSection = new ListSection();
-                        int listSize = dis.readInt();
-                        for (int j = 0; j < listSize; j++) {
-                            listSection.addItem(dis.readUTF());
-                        }
-                        section = listSection;
-                    }
-                    case "EDUCATION", "EXPERIENCE" -> {
-                        OrganizationSection organizationSection = new OrganizationSection();
-                        int organizationCount = dis.readInt();
-                        for (int j = 0; j < organizationCount; j++) {
-                            String name = dis.readUTF();
-                            String url = null;
-                            if (dis.readBoolean()) {
-                                url = dis.readUTF();
-                            }
-                            Organization organization = new Organization(name, url);
-                            int positionsCount = dis.readInt();
-                            for (int k = 0; k < positionsCount; k++) {
-                                String title = dis.readUTF();
-                                String desciption = null;
-                                if (dis.readBoolean()) {
-                                    desciption = dis.readUTF();
-                                }
-                                LocalDate startDate = LocalDate.parse(dis.readUTF());
-                                LocalDate endDate = null;
-                                if (dis.readBoolean()) {
-                                    endDate = LocalDate.parse(dis.readUTF());
-                                }
-                                organization.addPosition(new Organization.Position(title,desciption,startDate,endDate));
-                            }
-                            organizationSection.addOrganization(organization);
-                        }
-                        section = organizationSection;
-                    }
-                }
-                resume.addSection(SectionType.valueOf(type), section);
-            }
+            processCollection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            processCollection(dis, () -> {
+                SectionType type = SectionType.valueOf(dis.readUTF());
+                resume.addSection(type, readSection(dis, type));
+            });
             return resume;
         }
+    }
+
+    private Section readSection(DataInputStream dis, SectionType type) throws IOException {
+        switch (type) {
+            case PERSONAL, OBJECTIVE -> {
+                return new TextSection(dis.readUTF());
+            }
+            case ACHIEVEMENT, QUALIFICATION -> {
+                return new ListSection(readCollection(dis, dis::readUTF));
+            }
+            case EDUCATION, EXPERIENCE -> {
+                return new OrganizationSection(readCollection(dis, () ->
+                        new Organization(dis.readUTF(), readNullable(dis, String::toString), readCollection(dis, () ->
+                                new Organization.Position(dis.readUTF(), readNullable(dis, String::toString),
+                                        LocalDate.parse(dis.readUTF()), readNullable(dis, LocalDate::parse))
+                        ))
+                ));
+            }
+        }
+        throw new StorageException("Data serialization error");
+    }
+
+    private <T> void writeCollection(DataOutputStream dos, Collection<T> collection, ElementWriter<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T t : collection) {
+            writer.write(t);
+        }
+    }
+
+    private void processCollection(DataInputStream dis, ElementProcessor processor) throws IOException {
+        int collectionSize = dis.readInt();
+        for (int i = 0; i < collectionSize; i++) {
+            processor.process();
+        }
+    }
+
+    private <T> Collection<T> readCollection(DataInputStream dis, ElementReader<T> reader) throws IOException {
+        int collectionSize = dis.readInt();
+        List<T> list = new ArrayList<>(collectionSize);
+        for (int i = 0; i < collectionSize; i++) {
+            list.add(reader.read());
+        }
+        return list;
+    }
+
+    private <T> void writeNullable(T value, Function<T, String> function, DataOutputStream dos) throws IOException {
+        dos.writeBoolean(value != null);
+        if (value != null)
+            dos.writeUTF(function.apply(value));
+    }
+
+    private <R> R readNullable(DataInputStream dis, Function<String, R> function) throws IOException {
+        R res;
+        if (dis.readBoolean()) {
+            res = function.apply(dis.readUTF());
+        } else res = null;
+        return res;
+    }
+
+    private interface ElementWriter<T> {
+        void write(T t) throws IOException;
+    }
+
+    private interface ElementReader<T> {
+        T read() throws IOException;
+    }
+
+    private interface ElementProcessor {
+        void process() throws IOException;
     }
 }

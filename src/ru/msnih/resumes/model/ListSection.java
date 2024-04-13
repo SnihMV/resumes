@@ -1,25 +1,22 @@
 package ru.msnih.resumes.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ListSection extends Section {
 
-    private final List<String> list;
+    private final List<String> list = new ArrayList<>();
 
     public ListSection() {
-        this.list = new ArrayList<>();
+        this(Collections.emptyList());
     }
 
     public ListSection(String... list) {
         this(Arrays.asList(list));
     }
 
-    public ListSection(List<String> list) {
-        Objects.requireNonNull(list, "Section list cannot be null");
-        this.list = list;
+    public ListSection(Collection<String> collection) {
+        Objects.requireNonNull(collection, "Section list cannot be null");
+        list.addAll(collection);
     }
 
     public void addItem(String item) {
