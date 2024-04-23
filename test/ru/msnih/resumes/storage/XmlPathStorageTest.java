@@ -7,6 +7,6 @@ import java.nio.file.Path;
 class XmlPathStorageTest extends AbstractStorageTest {
 
     public XmlPathStorageTest() {
-        super(new PathStorageStrategy(Path.of(STORAGE_DIR), new XmlStreamSerializer()));
+        super(new PathStorageStrategy(Path.of(STORAGE_DIR_PATH), new XmlStreamSerializer()));
     }
 }

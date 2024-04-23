@@ -43,9 +43,7 @@ public class DataStreamSerializer implements StreamSerializer {
     @Override
     public Resume doRead(InputStream inputStream) throws IOException {
         try (DataInputStream dis = new DataInputStream(inputStream)) {
-            String uuid = dis.readUTF();
-            String fullName = readNullable(dis, String::toString);
-            Resume resume = new Resume(uuid, fullName);
+            Resume resume = new Resume(dis.readUTF(), readNullable(dis, String::toString));
             processCollection(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             processCollection(dis, () -> {
                 SectionType type = SectionType.valueOf(dis.readUTF());

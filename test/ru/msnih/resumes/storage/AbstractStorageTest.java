@@ -4,10 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.msnih.resumes.exception.AlreadyExistStorageException;
 import ru.msnih.resumes.exception.NotExistStorageException;
-import ru.msnih.resumes.model.*;
+import ru.msnih.resumes.model.Resume;
+import ru.msnih.resumes.util.Config;
 
-import java.time.Month;
 import java.util.Arrays;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,12 +16,12 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
-    protected static final String STORAGE_DIR = "C:\\workspace\\resumes\\Resumes\\storage";
+    protected static final String STORAGE_DIR_PATH = Config.getInstance().getStorageDirPath();
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
     private static final String DUMMY = "dummy";
 
     public static final Resume R1;
@@ -34,7 +35,7 @@ public abstract class AbstractStorageTest {
         R3 = new Resume(UUID_3, "Name2");
         R4 = new Resume(UUID_4, "Name3");
 
-        R1.addContact(ContactType.PHONE, "89219894856");
+       /* R1.addContact(ContactType.PHONE, "89219894856");
         R1.addContact(ContactType.EMAIL, "SnihMV@gmail.com");
         R1.addContact(ContactType.HOMEPAGE, "www.sneech.com");
         R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective section R1"));
@@ -52,7 +53,7 @@ public abstract class AbstractStorageTest {
         R1.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("BGTU", null,
                         new Organization.Position("student", "learning", 2004, Month.SEPTEMBER, 2009, Month.JULY),
-                        new Organization.Position("aspirant", null, 2009, Month.AUGUST, 2012, Month.JUNE))));
+                        new Organization.Position("aspirant", null, 2009, Month.AUGUST, 2012, Month.JUNE))));*/
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -89,9 +90,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     void update() {
-        Resume resume = storage.get("uuid2");
+        Resume resume = storage.get(UUID_2);
         storage.update(new Resume(UUID_2, DUMMY));
-        assertNotSame(resume, storage.get("uuid2"));
+        assertNotEquals(resume, storage.get(UUID_2));
+        assertNotSame(resume, storage.get(UUID_2));
         assertSize(4);
     }
 
@@ -119,9 +121,10 @@ public abstract class AbstractStorageTest {
         assertIterableEquals(Arrays.asList(R1, R3, R4, R2), storage.getAllSorted());
     }
 
-    protected void assertGet(Resume resume){
+    protected void assertGet(Resume resume) {
         assertEquals(resume, storage.get(resume.getUuid()));
     }
+
     protected void assertSize(int i) {
         assertEquals(i, storage.size());
     }

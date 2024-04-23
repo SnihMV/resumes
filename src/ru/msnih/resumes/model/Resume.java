@@ -10,19 +10,10 @@ import java.util.*;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Comparable<Resume>, Serializable {
 
-    private static final Comparator<String> NULL_SAFE_STRING_COMPARATOR;
-    private static final Comparator<Resume> RESUME_COMPARATOR;
-
     private final String uuid;
     private String fullName;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
-
-    static {
-        NULL_SAFE_STRING_COMPARATOR = Comparator.nullsLast(String::compareToIgnoreCase);
-        RESUME_COMPARATOR = Comparator.comparing(Resume::getFullName, NULL_SAFE_STRING_COMPARATOR)
-                .thenComparing(Resume::getUuid, NULL_SAFE_STRING_COMPARATOR);
-    }
 
     public Resume() {
         this(null);
@@ -90,7 +81,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         return Objects.hash(uuid, fullName, contacts, sections);
     }
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Name: \"" + fullName + "\" | UUID: \"" + uuid + "\"\n");
@@ -109,9 +99,9 @@ public class Resume implements Comparable<Resume>, Serializable {
         return sb.toString();
     }
 
-
     @Override
     public int compareTo(Resume that) {
-        return RESUME_COMPARATOR.compare(this, that);
+        return Comparator.comparing(Resume::getFullName, Comparator.nullsLast(String::compareToIgnoreCase))
+                .thenComparing(Resume::getUuid).compare(this, that);
     }
 }
