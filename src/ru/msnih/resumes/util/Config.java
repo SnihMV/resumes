@@ -1,7 +1,7 @@
 package ru.msnih.resumes.util;
 
 import ru.msnih.resumes.storage.Storage;
-import ru.msnih.resumes.storage.serialization.SqlStorage;
+import ru.msnih.resumes.storage.SqlStorage;
 
 import java.io.IOException;
 import java.io.InputStream;

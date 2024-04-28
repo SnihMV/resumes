@@ -8,9 +8,9 @@ CREATE TABLE resume
 CREATE TABLE contact
 (
     id          SERIAL,
+    resume_uuid CHAR(36) NOT NULL,
     type        TEXT     NOT NULL,
     value       TEXT     NOT NULL,
-    resume_uuid CHAR(36) NOT NULL,
     CONSTRAINT contact_resume_fk FOREIGN KEY (resume_uuid)
         REFERENCES resume (uuid)
         ON DELETE CASCADE
@@ -18,5 +18,7 @@ CREATE TABLE contact
 
 CREATE UNIQUE INDEX contact_uuid_type_index
     on contact (resume_uuid, type);
+
+
 
 
