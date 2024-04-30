@@ -10,7 +10,7 @@ public class ExceptionUtil {
 
     public static StorageException convertException(SQLException e) {
         if (e.getSQLState().equals("23505")) {
-            return new AlreadyExistStorageException(null);
+            return new AlreadyExistStorageException(e.getMessage());
         }
         return new StorageException(e.getMessage(), e);
     }
