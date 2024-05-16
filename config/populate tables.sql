@@ -11,5 +11,6 @@ VALUES ('be409d5e-5f44-4b9b-8521-c955f837f8ba', 'PHONE', '+79219894856'),
        ('be409d5e-5f44-4b9b-8521-c955f837f8ba', 'SKYPE', 'sneechSkype'),
        ('35647749-02c3-4633-ad82-2f1f2c6afd95', 'PHONE', '+79326548715'),
        ('35647749-02c3-4633-ad82-2f1f2c6afd95', 'LINKEDIN', 'PaulLinkedin'),
+       ('35647749-02c3-4633-ad82-2f1f2c6afd95', 'EMAIL', 'gg@tl.net'),
        ('cae3fb4e-a188-4561-9eb1-b39f41e3564e', 'STACKOVERFLOW', 'DimanSOF'),
        ('cae3fb4e-a188-4561-9eb1-b39f41e3564e', 'HOMEPAGE', 'Dimaga.net');

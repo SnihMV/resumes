@@ -60,6 +60,16 @@ CREATE TABLE position
 
 CREATE INDEX position_organization_index ON position (organization_id);
 
+CREATE TABLE json_section
+(
+    id          SERIAL PRIMARY KEY,
+    resume_uuid CHAR(36) REFERENCES resume (uuid) ON DELETE CASCADE,
+    type        TEXT NOT NULL,
+    content     TEXT NOT NULL
+);
+CREATE UNIQUE INDEX json_section_uuid_type_index ON json_section (resume_uuid, type);
+
+
 
 
 

@@ -15,6 +15,14 @@ public class Config {
     private final String storageDirPath;
     private final Storage storage;
 
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Config() {
         try (InputStream input = Files.newInputStream(Path.of(PROPS_PATH))) {
             final Properties props = new Properties();
