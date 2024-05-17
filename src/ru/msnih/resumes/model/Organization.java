@@ -2,9 +2,9 @@ package ru.msnih.resumes.model;
 
 import ru.msnih.resumes.util.XmlLocalDateAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -67,7 +67,7 @@ public class Organization implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder(link + "\n");
         for (Position p : positions) {
-            sb.append(p + "\n");
+            sb.append(p).append("\n");
             sb.append("------------------------\n");
         }
         return sb.toString();

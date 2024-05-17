@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/resume"})
 public class ResumeServlet extends HttpServlet {
-    private Storage storage = Config.getInstance().getStorage();
+    private final Storage storage = Config.getInstance().getStorage();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

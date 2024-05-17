@@ -34,41 +34,6 @@
           <root url="jar://$MODULE_DIR$/lib/junit-jupiter-params-5.8.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib/junit-jupiter-engine-5.8.1.jar!/" />
           <root url="jar://$MODULE_DIR$/lib/junit-platform-engine-1.8.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/junit-platform-runner-1.8.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/junit-platform-launcher-1.8.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/junit-platform-suite-api-1.8.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/junit-platform-suite-engine-1.8.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/junit-platform-suite-commons-1.8.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/.ideaLibSources/opentest4j-1.2.0-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="jaxb-api-2.4.0-b180830.0359" level="project" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jaxb-runtime-2.4.0-b180830.0438.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/javax.activation-api-1.2.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jaxb-core-4.0.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -80,16 +45,20 @@
           <root url="jar://$MODULE_DIR$/lib/gson-2.10.1.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/gson-2.10.1-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/postgresql-42.7.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jakarta.xml.bind-api-4.0.0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/lib/jakarta.xml.bind-api-4.0.0-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
@@ -99,53 +68,29 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/.ideaLibSources/jakarta.servlet-api-6.0.0-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jakarta.servlet-api-6.0.0-sources.jar!/" />
         </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jakarta.el-api-5.0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jakarta.servlet.jsp-api-3.1.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/jakarta.servlet.jsp-api-3.1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" scope="TEST" name="junit.platform.suite.api" level="project" />
+    <orderEntry type="library" scope="TEST" name="junit.platform.suite.engine" level="project" />
+    <orderEntry type="library" name="glassfish.jaxb.runtime" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/postgresql-42.6.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/jakarta.servlet.jsp.jstl-3.0.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES />
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/lib/jakarta.servlet-api-6.0.0-sources.jar!/" />
-        </SOURCES>
       </library>
     </orderEntry>
   </component>

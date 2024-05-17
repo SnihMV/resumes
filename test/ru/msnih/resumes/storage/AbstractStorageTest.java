@@ -7,6 +7,7 @@ import ru.msnih.resumes.exception.NotExistStorageException;
 import ru.msnih.resumes.model.*;
 import ru.msnih.resumes.util.Config;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +17,7 @@ public abstract class AbstractStorageTest {
 
     protected final Storage storage;
 
-    protected static final String STORAGE_DIR_PATH = Config.getInstance().getStorageDirPath();
+    protected static final Path STORAGE_DIR = Config.getInstance().getStorageDir();
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;

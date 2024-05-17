@@ -1,8 +1,8 @@
 package ru.msnih.resumes.model;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.*;
 
@@ -87,12 +87,12 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (!contacts.isEmpty()) {
             sb.append("Contacts:\n");
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
-                sb.append(entry.getKey().getTitle() + ":" + entry.getValue() + "\n");
+                sb.append(entry.getKey().getTitle()).append(":").append(entry.getValue()).append("\n");
             }
         }
         if (!sections.isEmpty()) {
             for (Map.Entry<SectionType, Section> entry : sections.entrySet()) {
-                sb.append(entry.getKey().getTitle() + ":" + entry.getValue() + "\n");
+                sb.append(entry.getKey().getTitle()).append(":").append(entry.getValue()).append("\n");
             }
         }
         sb.append("-------------------------------------------------");
