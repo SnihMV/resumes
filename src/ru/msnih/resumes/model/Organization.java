@@ -15,6 +15,7 @@ import static ru.msnih.resumes.util.DateUtil.of;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
 
+    public static final Organization EMPTY = new Organization("",null, Position.EMPTY);
     private Link link;
     private final Set<Position> positions = new TreeSet<>();
 
@@ -76,6 +77,7 @@ public class Organization implements Serializable {
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Comparable<Position>, Serializable {
 
+        public static final Position EMPTY = new Position();
         private String title;
         private String description;
         @XmlJavaTypeAdapter(XmlLocalDateAdapter.class)
@@ -159,9 +161,10 @@ public class Organization implements Serializable {
 
         @Override
         public int compareTo(Position that) {
-            return Comparator.comparing(Position::getStartDate)
+            return Comparator.comparing(Position::getStartDate, Comparator.nullsLast(LocalDate::compareTo))
                     .thenComparing(Position::getEndDate, Comparator.nullsLast(LocalDate::compareTo))
-                    .thenComparing(Position::getTitle, String::compareToIgnoreCase).compare(this, that);
+                    .thenComparing(Position::getTitle, Comparator.nullsLast(String::compareToIgnoreCase))
+                    .compare(this, that);
         }
     }
 }

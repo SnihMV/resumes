@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import ru.msnih.resumes.model.*;
 import ru.msnih.resumes.storage.Storage;
 import ru.msnih.resumes.util.Config;
 
@@ -19,17 +20,46 @@ public class ResumeServlet extends HttpServlet {
         String uuid = req.getParameter("uuid");
         String action = req.getParameter("action");
 
-        if (action.equals("delete")) {
-            storage.delete(uuid);
-            resp.sendRedirect("list");
-            return;
+        Resume resume;
+        switch (action) {
+            case "delete" -> {
+                storage.delete(uuid);
+                resp.sendRedirect("list");
+                return;
+            }
+            case "view" -> {
+                resume = storage.get(uuid);
+            }
+            case "edit" -> {
+                resume = storage.get(uuid);
+                for (SectionType type : SectionType.values()) {
+                    if (resume.getSection(type) == null) {
+                        switch (type) {
+                            case OBJECTIVE, PERSONAL -> resume.addSection(type, TextSection.EMPTY);
+                            case QUALIFICATIONS, ACHIEVEMENTS -> resume.addSection(type, ListSection.EMPTY);
+                            case EDUCATION, EXPERIENCE ->resume.addSection(type, OrganizationSection.EMPTY);
+                        }
+                    }
+                }
+            }
+            default -> throw new IllegalStateException("Illegal action: " + action);
         }
-        req.setAttribute("resume", storage.get(uuid));
-        req.getRequestDispatcher(switch (action) {
-            case "view" -> "/WEB-INF/jsp/view.jsp";
-            case "edit" -> "/WEB-INF/jsp/edit.jsp";
-            default -> throw new IllegalStateException("Illegal parameter: action=\"" + action + "\"");
-        }).forward(req, resp);
+        req.setAttribute("resume", resume);
+        req.getRequestDispatcher(action.equals("view") ? "/WEB-INF/jsp/view.jsp" : "/WEB-INF/jsp/edit.jsp")
+                .forward(req,resp);
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Resume resume = new Resume(req.getParameter("uuid"), req.getParameter("fullName"));
+        for (ContactType type : ContactType.values()) {
+            String value = req.getParameter(type.name()).trim();
+            if (!value.isEmpty()) {
+                resume.addContact(type, value);
+            }
+        }
+        storage.update(resume);
+        resp.sendRedirect("list");
     }
 }

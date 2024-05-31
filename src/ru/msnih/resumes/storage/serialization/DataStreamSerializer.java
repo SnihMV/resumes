@@ -22,7 +22,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 dos.writeUTF(section.getKey().name());
                 switch (section.getKey()) {
                     case PERSONAL, OBJECTIVE -> dos.writeUTF(((TextSection) section.getValue()).getContent());
-                    case ACHIEVEMENT, QUALIFICATION ->
+                    case ACHIEVEMENTS, QUALIFICATIONS ->
                             writeCollection(dos, ((ListSection) section.getValue()).getList(), dos::writeUTF);
                     case EDUCATION, EXPERIENCE ->
                             writeCollection(dos, ((OrganizationSection) section.getValue()).getOrganizations(), organization -> {
@@ -58,7 +58,7 @@ public class DataStreamSerializer implements StreamSerializer {
             case PERSONAL, OBJECTIVE -> {
                 return new TextSection(dis.readUTF());
             }
-            case ACHIEVEMENT, QUALIFICATION -> {
+            case ACHIEVEMENTS, QUALIFICATIONS -> {
                 return new ListSection(readCollection(dis, dis::readUTF));
             }
             case EDUCATION, EXPERIENCE -> {

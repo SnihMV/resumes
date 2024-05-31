@@ -1,10 +1,10 @@
 package ru.msnih.resumes.model;
 
 public enum SectionType {
-    PERSONAL("Personal"),
     OBJECTIVE("Objective"),
-    ACHIEVEMENT("Achievements"),
-    QUALIFICATION("Qualifications"),
+    PERSONAL("Personal"),
+    ACHIEVEMENTS("Achievements"),
+    QUALIFICATIONS("Qualifications"),
     EXPERIENCE("Experience"),
     EDUCATION("Education");
 

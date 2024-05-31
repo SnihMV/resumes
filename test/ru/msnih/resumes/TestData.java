@@ -28,8 +28,8 @@ public class TestData {
         R1.addContact(ContactType.HOMEPAGE, "www.sneech.com");
         R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective section R1"));
         R1.addSection(SectionType.PERSONAL, new TextSection("Personal section R1"));
-        R1.addSection(SectionType.ACHIEVEMENT, new ListSection());
-        R1.addSection(SectionType.QUALIFICATION, new ListSection("Java", "SQL", "Spring"));
+        R1.addSection(SectionType.ACHIEVEMENTS, new ListSection("W", "Number 1"));
+        R1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "Spring"));
         R1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Kremlin", "www.kremlin.ru",
                         new Organization.Position("President", null, 2024, Month.MARCH),
@@ -57,8 +57,7 @@ public class TestData {
                         new Organization.Position("Waiter", null, 1999, Month.JANUARY),
                         new Organization.Position("Waiter", null, 1999, Month.JANUARY, 2032, Month.APRIL))));
         R3.addSection(SectionType.PERSONAL, new TextSection("Personal section R3"));
-        R3.addSection(SectionType.ACHIEVEMENT, new ListSection());
-        R3.addSection(SectionType.QUALIFICATION, new ListSection("Java", "SQL", "Spring"));
+        R3.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "Spring"));
         R3.addSection(SectionType.EDUCATION, new OrganizationSection(
                 new Organization("SPBGTU", "politech.ru",
                         new Organization.Position("student", "learning", 2004, Month.SEPTEMBER, 2009, Month.JULY),

@@ -4,10 +4,10 @@ import java.util.*;
 
 public class ListSection extends Section {
 
+    public static final Section EMPTY = new ListSection("");
     private final List<String> list = new ArrayList<>();
 
     public ListSection() {
-        this(Collections.emptyList());
     }
 
     public ListSection(String... list) {

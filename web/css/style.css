@@ -46,9 +46,9 @@ tr:hover td {
 }
 
 dl {
-    background: none repeat scroll 0 0 #FAFAFA;
-    margin: 8px 0;
-    padding: 0;
+    background: none repeat scroll 0 0 #cee5f5;
+    margin: 10px;
+    padding: 10px;
 }
 
 dt {
@@ -62,11 +62,36 @@ dd {
     vertical-align: top;
 }
 
+h1 {
+    margin-left: 20px;
+    padding: 20px;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
 h2, h3 {
-    margin: 15px 0 5px;
+    margin: 20px;
 }
 
 li {
     margin: 15px 0;
 }
+
+input, textarea{
+    margin-left: 10px;
+}
+
+.pos_div{
+    background-color: #274d9f;
+    border: 2px solid #003399;
+    margin: 5px;
+    padding: 5px;
+}
+.org_div, .cont_div {
+    background-color: cornflowerblue;
+    border: 2px solid black;
+    margin: 5px;
+    padding: 5px;
+}
+
 

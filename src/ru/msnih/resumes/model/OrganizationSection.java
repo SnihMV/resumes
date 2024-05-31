@@ -3,10 +3,10 @@ package ru.msnih.resumes.model;
 import java.util.*;
 
 public class OrganizationSection extends Section {
+    public static final Section EMPTY = new OrganizationSection(Organization.EMPTY);
     private final List<Organization> organizations = new ArrayList<>();
 
     public OrganizationSection() {
-        this(Collections.emptyList());
     }
 
     public OrganizationSection(Organization... organizations) {

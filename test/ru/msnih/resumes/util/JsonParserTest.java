@@ -20,7 +20,7 @@ class JsonParserTest  {
 
     @Test
     void testSection() {
-        Section s1 = R1.getSection(SectionType.QUALIFICATION);
+        Section s1 = R1.getSection(SectionType.QUALIFICATIONS);
         String json = JsonParser.write(s1, Section.class);
         System.out.println(json);
         Section s2 = JsonParser.read(json, Section.class);

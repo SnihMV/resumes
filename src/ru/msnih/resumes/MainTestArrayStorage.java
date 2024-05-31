@@ -6,12 +6,7 @@ import ru.msnih.resumes.model.*;
 import ru.msnih.resumes.storage.ArrayStorage;
 import ru.msnih.resumes.storage.Storage;
 
-import java.lang.reflect.Field;
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new ArrayStorage();
@@ -51,8 +46,8 @@ public class MainTestArrayStorage {
         R1.addContact(ContactType.HOMEPAGE, "www.sneech.com");
         R1.addSection(SectionType.OBJECTIVE, new TextSection("Objective section R1"));
         R1.addSection(SectionType.PERSONAL, new TextSection("Personal section R1"));
-        R1.addSection(SectionType.ACHIEVEMENT, new ListSection());
-        R1.addSection(SectionType.QUALIFICATION, new ListSection("Java", "SQL", "Spring"));
+//        R1.addSection(SectionType.ACHIEVEMENTS, new ListSection());
+        R1.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "Spring"));
         R1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
                 new Organization("Kremlin", "www.kremlin.ru",
                         new Organization.Position("President", null, 2024, Month.MARCH),
@@ -66,7 +61,7 @@ public class MainTestArrayStorage {
                         new Organization.Position("student", "learning", 2004, Month.SEPTEMBER, 2009, Month.JULY),
                         new Organization.Position("aspirant", null, 2009, Month.AUGUST, 2012, Month.JUNE))));
 //        System.out.println(R1);
-
+        System.out.println(R1.getSection(SectionType.ACHIEVEMENTS)==null);
     }
 
     static void printAll() {

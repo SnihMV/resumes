@@ -163,7 +163,7 @@ public class SqlStorage implements Storage {
                 switch (sectionEntry.getKey()) {
                     case PERSONAL, OBJECTIVE ->
                             insertTextSection(sectionId, (TextSection) sectionEntry.getValue(), conn);
-                    case ACHIEVEMENT, QUALIFICATION ->
+                    case ACHIEVEMENTS, QUALIFICATIONS ->
                             insertListSection(sectionId, (ListSection) sectionEntry.getValue(), conn);
                     case EDUCATION, EXPERIENCE ->
                             insertOrganizationSection(sectionId, (OrganizationSection) sectionEntry.getValue(), conn);
@@ -182,15 +182,12 @@ public class SqlStorage implements Storage {
                 switch (type) {
                     case PERSONAL, OBJECTIVE ->
                             readFromTable(conn, "SELECT content FROM text_section_entry WHERE section_id = ?",
-                                    sectionId, (rs) -> {
-                                        resume.addSection(type, new TextSection(rs.getString("content")));
-                                    });
-                    case ACHIEVEMENT, QUALIFICATION -> {
+                                    sectionId, (rs) -> resume.addSection(
+                                            type, new TextSection(rs.getString("content"))));
+                    case ACHIEVEMENTS, QUALIFICATIONS -> {
                         ListSection section = new ListSection();
                         readFromTable(conn, "SELECT content FROM text_section_entry WHERE section_id = ?",
-                                sectionId, (rs) -> {
-                                    section.addItem(rs.getString("content"));
-                                });
+                                sectionId, (rs) -> section.addItem(rs.getString("content")));
                         resume.addSection(type, section);
                     }
                     case EDUCATION, EXPERIENCE -> {
